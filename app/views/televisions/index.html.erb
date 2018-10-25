@@ -1,0 +1,138 @@
+
+
+
+<div class="row">
+  <div class="col-sm-6">
+    <h1>Televisions</h1>
+  </div>
+
+  <div class="col-sm-6 text-right">
+  <%= link_to new_television_path, class: 'btn btn-primary' do %>
+    Add New Television
+  <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-2" style="font-size: 0.75rem">
+    <h6>Year</h6>
+    <% @televisions.aggs["year"]["buckets"].sort_by{ |b| b["key"] }.reverse.each do |bucket| %>
+      <div>
+        <% if params[:year] == bucket["key"].to_s %>
+          <strong><%= link_to bucket["key"], request.params.except(:year) %></strong>
+        <% else %>
+          <%= link_to bucket["key"], request.params.merge(year: bucket["key"]) %>
+        <% end %>
+        (<%= bucket["doc_count"] %>)
+      </div>
+    <% end %>
+
+    <br/>
+
+    <h6>Brand</h6>
+    <% @televisions.aggs["brand"]["buckets"].sort_by{ |b| b["key"] }.each do |bucket| %>
+      <div>
+        <% if params[:brand] == bucket["key"].to_s %>
+          <strong><%= link_to bucket["key"], request.params.except(:brand) %></strong>
+        <% else %>
+          <%= link_to bucket["key"], request.params.merge(brand: bucket["key"]) %>
+        <% end %>
+        (<%= bucket["doc_count"] %>)
+      </div>
+    <% end %>
+
+    <br/>
+
+    <h6>Size</h6>
+    <% @televisions.aggs["size"]["buckets"].sort_by{ |b| b["key"] }.each do |bucket| %>
+      <div>
+        <% if params[:size] == bucket["key"].to_s %>
+          <strong><%= link_to bucket["key"], request.params.except(:size) %></strong>
+        <% else %>
+          <%= link_to bucket["key"], request.params.merge(size: bucket["key"]) %>
+        <% end %>
+        (<%= bucket["doc_count"] %>)
+      </div>
+    <% end %>
+
+    <br/>
+
+    <h6>Display</h6>
+    <% @televisions.aggs["display"]["buckets"].sort_by{ |b| b["key"] }.each do |bucket| %>
+      <div>
+        <% if params[:display] == bucket["key"].to_s %>
+          <strong><%= link_to bucket["key"], request.params.except(:display) %></strong>
+        <% else %>
+          <%= link_to bucket["key"], request.params.merge(display: bucket["key"]) %>
+        <% end %>
+        (<%= bucket["doc_count"] %>)
+      </div>
+    <% end %>
+
+    <br/>
+
+    <h6>Price</h6>
+    <% @televisions.aggs["price"]["buckets"].sort_by{ |b| b.fetch("from", 0) }.each do |bucket| %>
+      <div>
+        <% if params[:price_from] == bucket["from"].to_s && params[:price_to] == bucket["to"].to_s %>
+          <strong><%= link_to price_range_name(bucket), request.params.except(:price) %></strong>
+        <% else %>
+          <%= link_to price_range_name(bucket), request.params.merge(price_from: bucket["from"], price_to: bucket["to"]) %>
+        <% end %>
+        (<%= bucket["doc_count"] %>)
+      </div>
+    <% end %>
+
+    <%= form_with method: :get, local: true, html: { class: "form-inline" } do |form| %>
+      <div class="form-group mb-2">
+        <%= form.number_field :price_from, value: params[:price_from], placeholder: "$Min", class: "form-control" %>
+      </div>
+      <div class="form-group mb-2">
+        <%= form.number_field :price_to, value: params[:price_to], placeholder: "$Max", class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= form.button "Go", class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-sm-10">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+
+            <th>Name</th>
+
+
+                <th>Brand</th>
+                <th>Display</th>
+                <th>Price</th>
+                <th>Size</th>
+                <th>Year</th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @televisions.each do |television| %>
+            <%= content_tag :tr, id: dom_id(television), class: dom_class(television) do %>
+
+                <td><%= link_to television.name, television %></td>
+
+
+                          <td><%= television.brand %></td>
+                          <td><%= television.display %></td>
+                          <td><%= television.price %></td>
+                          <td><%= television.size %></td>
+                          <td><%= television.year %></td>
+
+
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="page-header">
+  <%= link_to televisions_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    All Televisions
+  <% end %>
+  <%= link_to edit_television_path(@television), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show television</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Brand:</dt>
+  <dd><%= @television.brand %></dd>
+
+  <dt>Name:</dt>
+  <dd><%= @television.name %></dd>
+
+  <dt>Display:</dt>
+  <dd><%= @television.display %></dd>
+
+  <dt>Price:</dt>
+  <dd><%= @television.price %></dd>
+
+  <dt>Size:</dt>
+  <dd><%= @television.size %></dd>
+
+  <dt>Year:</dt>
+  <dd><%= @television.year %></dd>
+
+</dl>

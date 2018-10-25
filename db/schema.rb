@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_24_213906) do
+ActiveRecord::Schema.define(version: 2018_10_24_214144) do
 
   create_table "announcements", force: :cascade do |t|
     t.datetime "published_at"
@@ -56,6 +56,17 @@ ActiveRecord::Schema.define(version: 2018_10_24_213906) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_services_on_user_id"
+  end
+
+  create_table "televisions", force: :cascade do |t|
+    t.string "brand"
+    t.string "name"
+    t.string "display"
+    t.float "price"
+    t.integer "size"
+    t.integer "year"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
